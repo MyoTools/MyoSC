@@ -1,0 +1,9 @@
+# MyoHLS — Cellpose-SAM 4.0.8
+# Put the downloaded weight at %USERPROFILE%\.cellpose\models\MyoHLS
+# Env: conda activate cpsam408
+
+# Train (500 epochs, from official cpsam)
+python -m cellpose --verbose --use_gpu --train --dir <TRAIN_DIR> --mask_filter _seg.npy --pretrained_model cpsam --model_name_out MyoHLS --learning_rate 3e-4 --weight_decay 0.1 --n_epochs 500 --train_batch_size 8 --save_every 100
+
+# Infer
+python -m cellpose --use_gpu --verbose --dir <IMAGE_DIR> --pretrained_model MyoHLS --augment --exclude_on_edges --save_png --no_npy --savedir <PRED_DIR>

@@ -1,0 +1,26 @@
+# Weights (download separately; do not commit)
+weights/
+*.pth
+*.pt
+*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# SegFormer dumps
+myopwc/SegFormer/work_dirs/
+myopwc/SegFormer/pretrained/
+myopwc/SegFormer/pross_img/
+myopwc/SegFormer/results/
+
+# Images / labels
+*.tif
+*.tiff
+*_seg.npy
+
+# OS
+.DS_Store
+Thumbs.db

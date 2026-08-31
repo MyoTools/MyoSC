@@ -1,0 +1,14 @@
+# CellposeSAM 4.0.8 train / inference environment
+# Create: conda env create -f models/MyoHLS/envs/environment_cpsam.yml
+# Or:     conda create -n cpsam408 python=3.10
+name: cpsam408
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - cellpose[gui]==4.0.8
+# Install GPU PyTorch after the env is created (do not use the default CPU wheels):
+#   conda activate cpsam408
+#   python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126

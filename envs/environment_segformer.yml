@@ -1,0 +1,58 @@
+# NVIDIA SegFormer (mmseg 0.11) — matches this machine's segformer env
+#
+# Use this repo's models/MyoPWC/SegFormer (single-GPU BN, PointHead skipped).
+# Do not clone the upstream repo over it.
+# Windows has no mmcv-full 1.2.7 CUDA wheel; B1 training does not need CUDA ops.
+#
+# ---------- 1. Create the env ----------
+# conda env create -f models/MyoPWC/envs/environment_segformer.yml
+# conda activate segformer
+#
+# ---------- 2. GPU PyTorch (cu110 index required; default pip is CPU) ----------
+# python -m pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 -f https://download.pytorch.org/whl/torch_stable.html
+#
+# ---------- 3. mmcv without ops (PowerShell) ----------
+# $env:MMCV_WITH_OPS='0'
+# python -m pip install mmcv==1.2.7 -i https://pypi.tuna.tsinghua.edu.cn/simple
+#
+# Linux/macOS for step 3:
+#   export MMCV_WITH_OPS=0
+#   python -m pip install mmcv==1.2.7
+#
+# ---------- 4. Install this repo's SegFormer ----------
+# cd models/MyoPWC/SegFormer
+# python -m pip install -e . -i https://pypi.tuna.tsinghua.edu.cn/simple
+#
+# Sanity check:
+#   python -c "import sys,torch,mmcv,mmseg; print(sys.executable); print(torch.__version__, torch.cuda.is_available()); print('mmcv', mmcv.__version__); print('mmseg', mmseg.__version__)"
+# Expected: ...\envs\segformer\python.exe / 1.7.1+cu110 True / mmcv 1.2.7 / mmseg 0.11.0
+#
+# ---------- 5. Train (PowerShell; do not use Git sh train.sh — it picks base Python) ----------
+# conda activate segformer
+# cd models/MyoPWC/SegFormer
+# python tools/train.py local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py --gpus 1
+# Weights: work_dirs/MyoPWC/latest.pth (40000 iters, no validation by default)
+# Backbone: SegFormer/pretrained/mit_b1.pth
+# Data: models/MyoPWC/cell_demo/ (data_root in the config)
+#
+# ---------- 6. Inference ----------
+# python demo/image_demo.py <image_folder> local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py work_dirs/MyoPWC/latest.pth --device cuda:0
+#
+name: segformer
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - pip
+  - pip:
+      - opencv-python==4.5.1.48
+      - addict==2.4.0
+      - yapf==0.30.0
+      - timm==0.3.2
+      - matplotlib==3.7.5
+      - terminaltables==3.1.10
+      - attrs==25.3.0
+      - ipython==8.12.3
+      - pyyaml==6.0.3
+      - pillow==10.4.0
+      - numpy==1.24.4
